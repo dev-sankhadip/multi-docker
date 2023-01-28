@@ -11,12 +11,12 @@ before_install:
 #   - docker run -e CI=true stephengrider/react-test npm test
 
 after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker build -t devsankhadip/multi-client ./client
   - docker build -t devsankhadip/multi-nginx ./nginx
   - docker build -t devsankhadip/multi-server ./server
   - docker build -t devsankhadip/multi-worker ./worker
   # Log in to the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
   - docker push devsankhadip/multi-client
   - docker push devsankhadip/multi-nginx
